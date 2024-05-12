@@ -1,0 +1,190 @@
+root@k8s-master1:~/test/kube-prometheus# kubectl describe pod alertmanager-main-0 -n monitoring
+Name:             alertmanager-main-0
+Namespace:        monitoring
+Priority:         0
+Service Account:  alertmanager-main
+Node:             k8s-worker2/192.168.195.142
+Start Time:       Sun, 12 May 2024 09:16:59 +0300
+Labels:           alertmanager=main
+                  app.kubernetes.io/component=alert-router
+                  app.kubernetes.io/instance=main
+                  app.kubernetes.io/managed-by=prometheus-operator
+                  app.kubernetes.io/name=alertmanager
+                  app.kubernetes.io/part-of=kube-prometheus
+                  app.kubernetes.io/version=0.27.0
+                  apps.kubernetes.io/pod-index=0
+                  controller-revision-hash=alertmanager-main-6d8cd6c496
+                  statefulset.kubernetes.io/pod-name=alertmanager-main-0
+Annotations:      kubectl.kubernetes.io/default-container: alertmanager
+Status:           Running
+IP:               10.244.2.8
+IPs:
+  IP:           10.244.2.8
+Controlled By:  StatefulSet/alertmanager-main
+Init Containers:
+  init-config-reloader:
+    Container ID:  cri-o://abe4981de3f50a1600b421b046583b426e3d828503b1bf39fff3aa890b331080
+    Image:         quay.io/prometheus-operator/prometheus-config-reloader:v0.73.1
+    Image ID:      quay.io/prometheus-operator/prometheus-config-reloader@sha256:d25bce1f8e3d7c4eb8004be5b34255cd5891091acfbff7a89cc3e51d830a9949
+    Port:          8080/TCP
+    Host Port:     0/TCP
+    Command:
+      /bin/prometheus-config-reloader
+    Args:
+      --watch-interval=0
+      --listen-address=:8080
+      --config-file=/etc/alertmanager/config/alertmanager.yaml.gz
+      --config-envsubst-file=/etc/alertmanager/config_out/alertmanager.env.yaml
+      --watched-dir=/etc/alertmanager/config
+    State:          Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Sun, 12 May 2024 09:17:45 +0300
+      Finished:     Sun, 12 May 2024 09:17:59 +0300
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     10m
+      memory:  50Mi
+    Requests:
+      cpu:     10m
+      memory:  50Mi
+    Environment:
+      POD_NAME:  alertmanager-main-0 (v1:metadata.name)
+      SHARD:     -1
+    Mounts:
+      /etc/alertmanager/config from config-volume (ro)
+      /etc/alertmanager/config_out from config-out (rw)
+Containers:
+  alertmanager:
+    Container ID:  cri-o://508b03bbbe4d5e2d18f3b54e78a8b06d2913b81a44a8367d4c34cd8e07b4e934
+    Image:         quay.io/prometheus/alertmanager:v0.27.0
+    Image ID:      quay.io/prometheus/alertmanager@sha256:45c3a586d4332d710bef92b06e90380c0b1f588968c00100d4b5e4e44c40ca5f
+    Ports:         9093/TCP, 9094/TCP, 9094/UDP
+    Host Ports:    0/TCP, 0/TCP, 0/UDP
+    Args:
+      --config.file=/etc/alertmanager/config_out/alertmanager.env.yaml
+      --storage.path=/alertmanager
+      --data.retention=120h
+      --cluster.listen-address=[$(POD_IP)]:9094
+      --web.listen-address=:9093
+      --web.route-prefix=/
+      --cluster.label=monitoring/main
+      --cluster.peer=alertmanager-main-0.alertmanager-operated:9094
+      --cluster.peer=alertmanager-main-1.alertmanager-operated:9094
+      --cluster.peer=alertmanager-main-2.alertmanager-operated:9094
+      --cluster.reconnect-timeout=5m
+      --web.config.file=/etc/alertmanager/web_config/web-config.yaml
+    State:       Waiting
+      Reason:    CrashLoopBackOff
+    Last State:  Terminated
+      Reason:    Error
+      Message:   ts=2024-05-12T06:43:13.815Z caller=main.go:181 level=info msg="Starting Alertmanager" version="(version=0.27.0, branch=HEAD, revision=0aa3c2aad14cff039931923ab16b26b7481783b5)"
+ts=2024-05-12T06:43:13.815Z caller=main.go:182 level=info build_context="(go=go1.21.7, platform=linux/amd64, user=root@22cd11f671e9, date=20240228-11:51:20, tags=netgo)"
+
+      Exit Code:    2
+      Started:      Sun, 12 May 2024 09:43:13 +0300
+      Finished:     Sun, 12 May 2024 09:44:52 +0300
+    Ready:          False
+    Restart Count:  12
+    Limits:
+      cpu:     100m
+      memory:  100Mi
+    Requests:
+      cpu:      4m
+      memory:   100Mi
+    Liveness:   http-get http://:web/-/healthy delay=0s timeout=3s period=10s #success=1 #failure=10
+    Readiness:  http-get http://:web/-/ready delay=3s timeout=3s period=5s #success=1 #failure=10
+    Environment:
+      POD_IP:   (v1:status.podIP)
+    Mounts:
+      /alertmanager from alertmanager-main-db (rw)
+      /etc/alertmanager/certs from tls-assets (ro)
+      /etc/alertmanager/config from config-volume (rw)
+      /etc/alertmanager/config_out from config-out (ro)
+      /etc/alertmanager/web_config/web-config.yaml from web-config (ro,path="web-config.yaml")
+  config-reloader:
+    Container ID:  cri-o://5fe74c5d0c595dd172dee7b130a33420e8ab07d123f418537fca51add8a2dbab
+    Image:         quay.io/prometheus-operator/prometheus-config-reloader:v0.73.1
+    Image ID:      quay.io/prometheus-operator/prometheus-config-reloader@sha256:d25bce1f8e3d7c4eb8004be5b34255cd5891091acfbff7a89cc3e51d830a9949
+    Port:          8080/TCP
+    Host Port:     0/TCP
+    Command:
+      /bin/prometheus-config-reloader
+    Args:
+      --listen-address=:8080
+      --reload-url=http://localhost:9093/-/reload
+      --config-file=/etc/alertmanager/config/alertmanager.yaml.gz
+      --config-envsubst-file=/etc/alertmanager/config_out/alertmanager.env.yaml
+      --watched-dir=/etc/alertmanager/config
+    State:          Running
+      Started:      Sun, 12 May 2024 09:18:42 +0300
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     10m
+      memory:  50Mi
+    Requests:
+      cpu:     10m
+      memory:  50Mi
+    Environment:
+      POD_NAME:  alertmanager-main-0 (v1:metadata.name)
+      SHARD:     -1
+    Mounts:
+      /etc/alertmanager/config from config-volume (ro)
+      /etc/alertmanager/config_out from config-out (rw)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  config-volume:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  alertmanager-main-generated
+    Optional:    false
+  tls-assets:
+    Type:                Projected (a volume that contains injected data from multiple sources)
+    SecretName:          alertmanager-main-tls-assets-0
+    SecretOptionalName:  <nil>
+  config-out:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     Memory
+    SizeLimit:  <unset>
+  web-config:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  alertmanager-main-web-config
+    Optional:    false
+  alertmanager-main-db:
+    Type:        EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:      
+    SizeLimit:   <unset>
+QoS Class:       Burstable
+Node-Selectors:  kubernetes.io/os=linux
+Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                     From               Message
+  ----     ------     ----                    ----               -------
+  Normal   Scheduled  28m                     default-scheduler  Successfully assigned monitoring/alertmanager-main-0 to k8s-worker2
+  Normal   Pulling    28m                     kubelet            Pulling image "quay.io/prometheus-operator/prometheus-config-reloader:v0.73.1"
+  Normal   Pulled     27m                     kubelet            Successfully pulled image "quay.io/prometheus-operator/prometheus-config-reloader:v0.73.1" in 15.914s (37.927s including waiting)
+  Normal   Created    27m                     kubelet            Created container init-config-reloader
+  Normal   Started    27m                     kubelet            Started container init-config-reloader
+  Normal   Pulling    27m                     kubelet            Pulling image "quay.io/prometheus/alertmanager:v0.27.0"
+  Normal   Pulled     26m                     kubelet            Successfully pulled image "quay.io/prometheus/alertmanager:v0.27.0" in 39.258s (39.258s including waiting)
+  Normal   Created    26m                     kubelet            Created container alertmanager
+  Normal   Started    26m                     kubelet            Started container alertmanager
+  Normal   Pulled     26m                     kubelet            Container image "quay.io/prometheus-operator/prometheus-config-reloader:v0.73.1" already present on machine
+  Normal   Created    26m                     kubelet            Created container config-reloader
+  Normal   Started    26m                     kubelet            Started container config-reloader
+  Warning  Unhealthy  26m (x4 over 26m)       kubelet            Liveness probe failed: Get "http://10.244.2.8:9093/-/healthy": dial tcp 10.244.2.8:9093: connect: connection refused
+  Warning  Unhealthy  18m (x116 over 26m)     kubelet            Readiness probe failed: Get "http://10.244.2.8:9093/-/ready": dial tcp 10.244.2.8:9093: connect: connection refused
+  Normal   Pulled     13m                     kubelet            Container image "quay.io/prometheus/alertmanager:v0.27.0" already present on machine
+  Normal   Created    13m                     kubelet            Created container alertmanager
+  Normal   Started    13m                     kubelet            Started container alertmanager
+  Warning  Unhealthy  12m (x7 over 13m)       kubelet            Liveness probe failed: Get "http://10.244.2.8:9093/-/healthy": dial tcp 10.244.2.8:9093: connect: connection refused
+  Warning  Unhealthy  8m32s (x65 over 13m)    kubelet            Readiness probe failed: Get "http://10.244.2.8:9093/-/ready": dial tcp 10.244.2.8:9093: connect: connection refused
+  Warning  BackOff    3m18s (x11 over 5m15s)  kubelet            Back-off restarting failed container alertmanager in pod alertmanager-main-0_monitoring(a4a852d6-e41b-4a2c-8cdb-1195636c02b2)
